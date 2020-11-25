@@ -1,0 +1,8 @@
+# ignore the virtual environment files
+env
+
+# ignore manage.py file
+manage.py
+
+# ignore db.sqlite3 file
+db.sqlite3
