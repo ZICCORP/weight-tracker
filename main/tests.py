@@ -37,3 +37,10 @@ class TestView(TestCase):
         
     def test_postformview_status_code(self):
         self.assertEqual(self.post_request.status_code, 302)
+
+    def test_html_template_used(self):
+        self.assertTemplateUsed(self.get_request,'home.html')
+
+    def test_contains_correct_html(self):
+        self.assertContains(self.get_request,'Welcome')
+ 
