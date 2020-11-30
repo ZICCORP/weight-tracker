@@ -1,6 +1,7 @@
 from django.test import TestCase
 from main.models import BodyWeight
 from main.forms import BodyWeightForm
+from main.views import BweightView
 from django.urls import reverse
 
 class TestModel(TestCase):
@@ -39,8 +40,12 @@ class TestView(TestCase):
         self.assertEqual(self.post_request.status_code, 302)
 
     def test_html_template_used(self):
-        self.assertTemplateUsed(self.get_request,'home.html')
+        self.assertTemplateUsed(self.get_request,'main/home.html')
 
     def test_contains_correct_html(self):
         self.assertContains(self.get_request,'Welcome')
+    
+    def test_listdata_method(self):
+        b=BweightView()
+        self.assertEqual(type(b.datalist(BodyWeight)),list)
  
