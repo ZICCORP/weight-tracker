@@ -20,9 +20,6 @@ from django.urls import path,include
 urlpatterns = [
     # Django admin
     path('admin/', admin.site.urls),
-    
-    # User Management
-    path('accounts/',include('django.contrib.auth.urls')),
     # Local app
     path('',include('main.urls')),
 
