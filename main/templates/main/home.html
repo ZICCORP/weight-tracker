@@ -1,31 +1,12 @@
-{% load static %}
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Home</title>
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    <script src="{% static 'js/d3.min.js' %}"></script>
+    <title>Welcome</title>
 </head>
 
 <body>
-    <h1>Welcome</h1>
-    <form method="POST">
-        {% csrf_token %}
-        {{form}}
-        <button type="submit">Submit</button>
-    </form>
-    <div style="text-align: center;">
-        <h1>Body Weight Bar Chart</h1>
-        <div id="d3-container" />
-    </div>
-
-    <script>
-        const data = {{ data| safe}}
-    </script>
-    <script src="{% static 'js/index.js' %}"></script>
+    <h1>Welcome to WeightTrack</h1>
 </body>
 
 </html>

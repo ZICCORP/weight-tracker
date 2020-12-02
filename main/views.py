@@ -4,7 +4,10 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from main.forms import BodyWeightForm
 from main.models import BodyWeight
-
+from django.contrib.auth import login,authenticate
+from django.contrib import messages
+from django.views.generic import FormView
+from users.forms import CustomUserCreationForm
 
 
 class BweightView(View):
@@ -42,3 +45,25 @@ class BweightView(View):
             bweight.save()
             return HttpResponseRedirect(reverse_lazy('bwv'))
         return render(request,'main/home.html',{'form':form,'data':self.datalist(BodyWeight)})
+
+class SignUpView(FormView):
+    template_name = "main/signup.html"
+    form_class=CustomUserCreationForm
+    
+    def get_success_url(self):
+        redirect_to =self.request.GET.get("next","/")
+        return redirect_to
+    def form_valid(self,form):
+        response = super().form_valid(form)
+        form.save()
+        email = form.cleaned_data.get("email")
+        raw_password = form.cleaned_data.get("password1")
+        first_name = form.cleaned_data.get("first_name")
+        last_name = form.cleaned_data.get("last_name")
+        birth_date = form.cleaned_data.get("birth_date")
+        gender= form.cleaned_data.get("gender")
+        user =authenticate(email=email,password=raw_password,first_name=first_name,last_name=last_name,birth_date=birth_date,gender=gender)
+        login(self.request,user)
+        form.send_mail()
+        messages.info(self.request,"You signed up successfully")
+        return response

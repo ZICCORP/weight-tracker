@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #Local
     'main.apps.MainConfig',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -121,3 +122,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static')]
+
+AUTH_USER_MODEL = 'users.CustomeUser'
+
+EMAIL_BACKEND=("django.core.mail.backends.console.EmailBackend")
