@@ -34,8 +34,8 @@ class TestForm(TestCase):
 
 class TestView(TestCase):
     def setUp(self):
-        self.get_request = self.client.get(reverse('bwv'))
-        self.post_request = self.client.post(reverse('bwv'),{'weight':77})
+        self.get_request = self.client.get(reverse('main:home'))
+        self.post_request = self.client.post(reverse('main:home'),{'weight':77})
     def test_getformview_status_code(self):
         self.assertEquals(self.get_request.status_code,200)
         
@@ -54,7 +54,7 @@ class TestView(TestCase):
  
 class TestSignupPage(TestCase):
     def test_user_signup_page_load_corrects(self):
-        response = self.client.get(reverse('signup'))
+        response = self.client.get(reverse('main:signup'))
         self.assertEqual(response.status_code,200)
         self.assertTemplateUsed(response,"main/signup.html")
         self.assertContains(response,"Create a new account")
@@ -71,7 +71,7 @@ class TestSignupPage(TestCase):
             'password2':'testpass123',
         }
         with patch.object(forms.CustomUserCreationForm,"send_mail") as mock_send:
-            response = self.client.post(reverse('signup'),post_data)
+            response = self.client.post(reverse('main:signup'),post_data)
         self.assertEqual(response.status_code,302)
         self.assertTrue(models.CustomeUser.objects.filter(email='zico@gmail.com').exists())
         self.assertTrue(auth.get_user(self.client).is_authenticated)

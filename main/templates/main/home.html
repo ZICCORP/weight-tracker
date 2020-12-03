@@ -9,10 +9,10 @@
     <h1>Welcome to WeightTrack</h1>
     {% if user.is_authenticated %}
     hi {{ user.get_full_name}}
-    <p><a href="{% url 'logout' %}">Log Out</a></p>
+    <p><a href="{% url 'main:logout' %}">Log Out</a></p>
     {% else %}
     <p>You are not Logged in</p>
-    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'main:login' %}">Login</a>
     {% endif %}
 </body>
 

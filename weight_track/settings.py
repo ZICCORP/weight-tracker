@@ -124,7 +124,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static')]
 
 AUTH_USER_MODEL = 'users.CustomeUser'
-
+LOGIN_URL ='main:login'
+LOGOUT_URL='main:logout'
 EMAIL_BACKEND=("django.core.mail.backends.console.EmailBackend")
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"

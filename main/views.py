@@ -43,7 +43,7 @@ class BweightView(View):
         if form.is_valid():
             bweight = form.save()
             bweight.save()
-            return HttpResponseRedirect(reverse_lazy('bwv'))
+            return HttpResponseRedirect(reverse_lazy('main:home'))
         return render(request,'main/home.html',{'form':form,'data':self.datalist(BodyWeight)})
 
 class SignUpView(FormView):
