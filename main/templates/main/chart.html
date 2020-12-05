@@ -17,6 +17,13 @@
         {{form}}
         <button type="submit">Submit</button>
     </form>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>{{message}}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     <div style="text-align: center;">
         <h1>Body Weight Bar Chart</h1>
         <div id="d3-container" />

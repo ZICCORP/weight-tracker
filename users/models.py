@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser,BaseUserManager
+from datetime import datetime
 
 #AbstractUser.
 #gender options 
@@ -7,6 +8,7 @@ gender_choices = (
     ('m','Male'),
     ('f','Female'),
 )
+
 
 
 class UserManager(BaseUserManager):
@@ -34,12 +36,12 @@ class UserManager(BaseUserManager):
             raise ValueError("Speruser must have is_superuser=True.")
         return self._create_user(email,password,**extra_fields)
 
-class CustomeUser(AbstractUser):
+class CustomUser(AbstractUser):
     username = None
     first_name = models.CharField(max_length=300,null=False,blank=False)
     last_name = models.CharField(max_length=300,null=False,blank=False)
     email = models.EmailField('email address',unique=True)
-    birth_date = models.DateField(blank=False,null=False)
+    birth_date = models.DateField(blank=False,null=False,default=datetime.today)
     gender = models.CharField(max_length=1, choices=gender_choices,blank=False,null=False)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['birth_date','gender','first_name','last_name']

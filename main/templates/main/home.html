@@ -6,6 +6,18 @@
 </head>
 
 <body>
+    <p>
+        {% if messages %}
+        {% for message in messages %}
+    <ul>
+        <li>
+            {{message}}
+        </li>
+
+    </ul>
+    {% endfor %}
+    {% endif %}
+    </p>
     <h1>Welcome to WeightTrack</h1>
     {% if user.is_authenticated %}
     hi {{ user.get_full_name}}

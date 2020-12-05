@@ -8,16 +8,22 @@ from django.contrib.auth import login,authenticate
 from django.contrib import messages
 from django.views.generic import FormView
 from users.forms import CustomUserCreationForm
+from django.db import IntegrityError
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from users.models import CustomUser
+from datetime import datetime
 
 
-class BweightView(View):
+class BweightView(LoginRequiredMixin,View):
+    
 
     def datalist(self,model):
         """
         Accepts a model as arguement and returns a list of dictionary with the date formated
         """
         calender = {1:'Jan',2:'Feb',3:'Mar',4:'Apr',5:'May',6:'Jun',7:'Jul',8:'Aug',9:'Sep',10:'Oct',11:'Nov',12:'Dec'}
-        data = model.objects.all().values('weight','date')
+        data = model.objects.filter(owner=self.request.user).values().order_by('date')
         d= []
         for i in data:
             for j in i:
@@ -36,15 +42,31 @@ class BweightView(View):
 
     def get(self,request,*args,**kwargs):
         context = {'form':BodyWeightForm(),'data':self.datalist(BodyWeight)}
-        return render(request,'main/home.html',context)
+        return render(request,'main/chart.html',context)
 
     def post(self,request, *args, **kwargs):
         form = BodyWeightForm(request.POST)
+        objs = BodyWeight.objects.filter(owner=request.user).values()
+        today = datetime.today().strftime('%Y-%m-%d')
+        today = today.split('-')
         if form.is_valid():
-            bweight = form.save()
-            bweight.save()
-            return HttpResponseRedirect(reverse_lazy('main:home'))
-        return render(request,'main/home.html',{'form':form,'data':self.datalist(BodyWeight)})
+                bweight = form.save(commit=False)
+                if objs:
+                    for i in objs:
+                        model_date = i['date']
+                        if model_date.year == int(today[0]) and model_date.month == int(today[1]) and model_date.day==int(today[2]):
+                            try:
+                                a = 9/0
+                            except ZeroDivisionError:
+                                messages.warning(request,'Sorry,you have entered your weight for the day.')
+                            finally:         
+                                return HttpResponseRedirect(reverse_lazy('main:weight'))
+                bweight.owner = request.user
+                today = datetime.today().strftime('%Y-%m-%d')
+                bweight.date = today
+                bweight.save()        
+                return HttpResponseRedirect(reverse_lazy('main:weight'))
+        return render(request,'main/chart.html',{'form':form,'data':self.datalist(BodyWeight)})
 
 class SignUpView(FormView):
     template_name = "main/signup.html"

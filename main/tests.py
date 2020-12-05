@@ -6,6 +6,7 @@ from main.views import BweightView
 from django.urls import reverse
 from unittest.mock import patch
 from django.contrib import auth
+from django.test.client import Client
 
 class TestModel(TestCase):
     def setUp(self):
@@ -34,19 +35,27 @@ class TestForm(TestCase):
 
 class TestView(TestCase):
     def setUp(self):
-        self.get_request = self.client.get(reverse('main:home'))
-        self.post_request = self.client.post(reverse('main:home'),{'weight':77})
+        self.client = Client()
+        obj = models.CustomUser.objects.create_user(email='frankchuka250@gmail.com',password='testpass123',first_name='Frank',last_name='zico',birth_date='1993-11-11',gender='m')
+        
     def test_getformview_status_code(self):
-        self.assertEquals(self.get_request.status_code,200)
+        self.client.login(password='testpass123',email='frankchuka250@gmail.com')
+        request = self.client.get(reverse('main:weight'))
+        self.assertEquals(request.status_code,200)
         
     def test_postformview_status_code(self):
-        self.assertEqual(self.post_request.status_code, 302)
+        request = self.client.post(reverse('main:weight'),{'weight':77})
+        self.assertEqual(request.status_code, 302)
 
     def test_html_template_used(self):
-        self.assertTemplateUsed(self.get_request,'main/home.html')
+        self.client.login(password='testpass123',email='frankchuka250@gmail.com')
+        request = self.client.get(reverse('main:weight'))
+        self.assertTemplateUsed(request,'main/chart.html')
 
     def test_contains_correct_html(self):
-        self.assertContains(self.get_request,'Welcome')
+        self.client.login(password='testpass123',email='frankchuka250@gmail.com')
+        request = self.client.get(reverse('main:weight'))
+        self.assertContains(request,'Welcome')
     
     def test_listdata_method(self):
         b=BweightView()
@@ -73,6 +82,7 @@ class TestSignupPage(TestCase):
         with patch.object(forms.CustomUserCreationForm,"send_mail") as mock_send:
             response = self.client.post(reverse('main:signup'),post_data)
         self.assertEqual(response.status_code,302)
-        self.assertTrue(models.CustomeUser.objects.filter(email='zico@gmail.com').exists())
+        self.assertTrue(models.CustomUser.objects.filter(email='zico@gmail.com').exists())
         self.assertTrue(auth.get_user(self.client).is_authenticated)
         mock_send.assert_called_once()
+    

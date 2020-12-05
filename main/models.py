@@ -1,5 +1,7 @@
 from django.db import models
+from users.models import CustomUser
 
 class BodyWeight(models.Model):
-    weight = models.IntegerField()
-    date = models.DateField(auto_now_add=True,unique=True)
+    weight = models.PositiveIntegerField()
+    date = models.DateField()
+    owner = models.ForeignKey(CustomUser,models.CASCADE)
