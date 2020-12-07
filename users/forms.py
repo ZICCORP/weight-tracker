@@ -12,9 +12,11 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
 
         model = get_user_model()
-        fields = ('first_name','last_name','email','birth_date','gender',)
+        fields = ('first_name','last_name','email',)
         widgets = {
-            'birth_date':forms.SelectDateWidget(years=range(1920,today_year))
+            'first_name':forms.TextInput(attrs={'placeholder': 'First Name'}),
+            'last_name':forms.TextInput(attrs={'placeholder':'Last Name'}),
+            'email':forms.TextInput(attrs={'placeholder':'Email'})
             }
     def send_mail(self):
         message = "Welcome {}".format(self.cleaned_data["email"])

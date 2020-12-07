@@ -7,12 +7,14 @@ from main.models import BodyWeight
 from django.contrib.auth import login,authenticate
 from django.contrib import messages
 from django.views.generic import FormView
+from django.contrib.auth.views import LoginView
 from users.forms import CustomUserCreationForm
 from django.db import IntegrityError
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from users.models import CustomUser
 from datetime import datetime
+from main.forms import AuthenticationForm
 
 
 class BweightView(LoginRequiredMixin,View):
@@ -69,7 +71,7 @@ class BweightView(LoginRequiredMixin,View):
         return render(request,'main/chart.html',{'form':form,'data':self.datalist(BodyWeight)})
 
 class SignUpView(FormView):
-    template_name = "main/signup.html"
+    template_name = "main/signup_signin.html"
     form_class=CustomUserCreationForm
     
     def get_success_url(self):
@@ -89,3 +91,20 @@ class SignUpView(FormView):
         form.send_mail()
         messages.info(self.request,"You signed up successfully")
         return response
+
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        sign_in_form = AuthenticationForm()
+        context['sign_in_form'] =sign_in_form
+        return context
+        
+
+class SignInView(LoginView):
+    template_name= "main/signup_signin.html"
+    form_class = AuthenticationForm
+
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        sign_up_form = CustomUserCreationForm()
+        context['sign_up_form'] = sign_up_form
+        return context

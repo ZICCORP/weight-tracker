@@ -2,3 +2,9 @@
 .rectangle:hover {
             opacity: 0.66;
         }
+
+ul.errorlist{
+    list-style-type: none;
+    color: red;
+    
+}

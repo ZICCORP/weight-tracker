@@ -44,5 +44,5 @@ class CustomUser(AbstractUser):
     birth_date = models.DateField(blank=False,null=False,default=datetime.today)
     gender = models.CharField(max_length=1, choices=gender_choices,blank=False,null=False)
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['birth_date','gender','first_name','last_name']
+    REQUIRED_FIELDS = ['first_name','last_name']
     objects=UserManager()

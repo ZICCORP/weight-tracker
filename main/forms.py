@@ -9,8 +9,8 @@ class BodyWeightForm(ModelForm):
         fields = ['weight',]
 
 class AuthenticationForm(forms.Form):
-    email = forms.EmailField()
-    password = forms.CharField(strip=False,widget=forms.PasswordInput)
+    email = forms.EmailField(widget=forms.TextInput(attrs={'placeholder':'Email'}))
+    password = forms.CharField(strip=False,widget=forms.PasswordInput(attrs={'placeholder':'Password'}))
 
     def __init__(self,request=None,*args,**kwargs):
         self.request =request
@@ -28,3 +28,6 @@ class AuthenticationForm(forms.Form):
 
     def get_user(self):
         return self.user
+
+
+
