@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
     <link rel="stylesheet" href="{% static 'css/base.css' %}" />
 
-    <title>Sign in & Sign up Form</title>
+    <title>{% if request.path == "/login/" %}Login to Weight-Track{% else %}Sign up for
+        Weight-Track{% endif %} </title>
 </head>
 
 <body>
