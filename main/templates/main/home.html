@@ -1,31 +1,108 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Welcome</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Google Font -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/style1.css' %}" />
+    <title>WTK| HOME</title>
 </head>
 
 <body>
-    <p>
-        {% if messages %}
-        {% for message in messages %}
-    <ul>
-        <li>
-            {{message}}
-        </li>
+    <!-- Header -->
+    <header class="header" id="header">
+        <!-- Navigation -->
+        <div class="navigation">
+            <nav class="nav__center container">
+                <div class="nav__logo">
+                    <span>
+                        <svg>
+                            <use xlink:href="{% static 'img/sprite.svg' %}#icon-map2"></use>
+                        </svg>
+                    </span>
+                    <h1>WTK</h1>
+                </div>
 
-    </ul>
-    {% endfor %}
-    {% endif %}
-    </p>
-    <h1>Welcome to WeightTrack</h1>
-    {% if user.is_authenticated %}
-    hi {{ user.get_full_name}}
-    <p><a href="{% url 'main:logout' %}">Log Out</a></p>
-    {% else %}
-    <p>You are not Logged in</p>
-    <a href="{% url 'main:login' %}">Login</a>
-    {% endif %}
+                <div class="nav__menu">
+                    <ul class="nav__list">
+                        <li class="nav__item">
+                            <a href="{% url 'main:home' %}" class="nav__link special">Home</a>
+                        </li>
+                        {% if user.is_authenticated %}
+                        <li class="nav__item">
+                            <a href="{% url 'main:logout' %}" class="nav__link special">Log out</a>
+                        </li>
+                        {% else %}
+                        <li class="nav__item">
+                            <a href="{% url 'main:login' %}" class="nav__link  special">Log in</a>
+                        </li>
+
+                        <li class="nav__item">
+                            <a href="{% url 'main:signup' %}" class="nav__link special">Sign up</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+
+                <div class="hamburger">
+                    <svg>
+                        <use xlink:href="{% static 'img/sprite.svg' %}#icon-menu"></use>
+                    </svg>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Banner -->
+        <div class="banner container">
+
+            <div class="banner__center">
+
+                <div class="banner__left">
+                    <span>
+
+                        {% if messages %}
+                        {% for message in messages %}
+                        <ul>
+                            <li class="alert alert-success">
+                                <strong>{{message}}</strong>
+                            </li>
+
+                        </ul>
+                        {% endfor %}
+                        {% endif %}
+
+                    </span><br><br><br>
+
+                    <span><strong> Welcome{% if user.is_authenticated%}, {{ user.get_full_name}}
+                            {% endif %}</strong></span>
+                    <h1>Weight Tracker - WTK</h1>
+                    <p>
+                        WTK is a Weight Tracking application.It creates a visual representation
+                        of your weight over time.Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rerum, sunt
+                        iste.
+                        Voluptate officiis dolorum quas nemo ab.Explicabo architecto labore nihil odio totam accusamus,
+                        rerum vero
+                        iste quidem, neque expedita!
+                    </p>
+
+
+                    <a href="{% url 'main:weight' %}">Get Started</a>
+                </div>
+                <div class="banner__right">
+                    <img src="{% static 'img/pic.svg' %}" alt="" />
+                </div>
+            </div>
+        </div>
+    </header>
+    <script src="{% static 'js/index1.js' %}"></script>
 </body>
 
 </html>
