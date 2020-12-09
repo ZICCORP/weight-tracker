@@ -40,6 +40,9 @@
                         <li class="nav__item">
                             <a href="{% url 'main:logout' %}" class="nav__link special">Log out</a>
                         </li>
+                        <li class="nav__item">
+                            <a href="{% url 'main:weight' %}" class="nav__link special">Activity</a>
+                        </li>
                         {% else %}
                         <li class="nav__item">
                             <a href="{% url 'main:login' %}" class="nav__link  special">Log in</a>
@@ -86,11 +89,10 @@
                     <h1>Weight Tracker - WTK</h1>
                     <p>
                         WTK is a Weight Tracking application.It creates a visual representation
-                        of your weight over time.Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rerum, sunt
-                        iste.
-                        Voluptate officiis dolorum quas nemo ab.Explicabo architecto labore nihil odio totam accusamus,
-                        rerum vero
-                        iste quidem, neque expedita!
+                        of your weight over time.This accessible application is
+                        the perfect way to chart your weight loss. The visually stunning design is easy to read and
+                        on the eyes.
+
                     </p>
 
 

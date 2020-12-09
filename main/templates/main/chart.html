@@ -3,36 +3,164 @@
 <html>
 
 <head>
-    <title>Home</title>
+    <meta charset="utf-8" />
+    <title>Bar Chart Template | PrepBootstrap</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    <script src="{% static 'js/d3.min.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static 'css/style1.css' %}" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/style1.css' %}" />
+
+    <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+
 </head>
 
 <body>
-    <h1>Welcome</h1>
-    <form method="POST">
-        {% csrf_token %}
-        {{form}}
-        <button type="submit">Submit</button>
-    </form>
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li>{{message}}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    <div style="text-align: center;">
-        <h1>Body Weight Bar Chart</h1>
-        <div id="d3-container" />
-    </div>
+    <!-- Header -->
+    <header class="header" id="header">
+        <!-- Navigation -->
+        <div class="navigation">
+            <nav class="nav__center container">
+                <div class="nav__logo">
+                    <span>
+                        <svg>
+                            <use xlink:href="{% static 'img/sprite.svg' %}#icon-map2"></use>
+                        </svg>
+                    </span>
+                    <h1>WTK</h1>
+                </div>
 
-    <script>
-        const data = {{ data| safe}}
-    </script>
-    <script src="{% static 'js/index.js' %}"></script>
+                <div class="nav__menu">
+                    <ul class="nav__list">
+                        <li class="nav__item">
+                            <a href="{% url 'main:home' %}" class="nav__link special">Home</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="hamburger">
+                    <svg>
+                        <use xlink:href="{% static 'img/sprite.svg' %}#icon-menu"></use>
+                    </svg>
+                </div>
+            </nav>
+        </div>
+
+        <br>
+        <br>
+        <br>
+
+
+        <div class="container">
+            <!-- Bar Chart - START -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="panel panel-default">
+
+                            <div class="panel-body">
+                                <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+
+                                <form method="POST" action="{% url 'main:weight' %}">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        {% if messages %}
+                                        <ul class="messages" style="list-style-type: none;">
+                                            {% for message in messages %}
+                                            <li class="alert alert-danger">
+                                                <strong>{{message}}</strong>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                        {% endif %}
+                                        <strong><label for="text" style="font-weight: bolder;font-size: 20px;">Enter
+                                                Weight
+                                                data:</label></strong>
+                                        <input type="number" name="weight" min="0" required id="id_weight"
+                                            class="form-control input-lg form-rounded"
+                                            style="height: 50px;font-size: medium;">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-lg"
+                                        style="font-size: 15px;">Submit</button>
+                                </form>
+
+                            </div>
+                            <div id="chart2" class="panel-body">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- you need to include the shieldui css and js assets in order for the charts to work -->
+            <link rel="stylesheet" type="text/css"
+                href="http://www.shieldui.com/shared/components/latest/css/light/all.min.css" />
+            <script type="text/javascript"
+                src="http://www.shieldui.com/shared/components/latest/js/shieldui-all.min.js"></script>
+
+            <script>
+                const data = {{ data| safe}}
+            </script>
+
+            <script>
+                window.onload = function () {
+
+                    var options = {
+                        animationEnabled: true,
+                        title: {
+                            text: "Bar chart visualization"
+                        },
+                        axisY: {
+                            title: "Body Weight (in kg)",
+                            suffix: "kg"
+                        },
+                        axisX: {
+                            title: "Dates"
+                        },
+                        data: [{
+                            type: "column",
+                            yValueFormatString: "#,##0.0#" % "",
+                            dataPoints: data
+                        }]
+                    };
+                    $("#chartContainer").CanvasJSChart(options);
+
+                }
+            </script>
+            <!-- Bar Chart - END -->
+
+        </div>
+        <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+        <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+        <script src="{% static 'js/index1.js' %}"></script>
+    </header>
 </body>
 
 </html>
