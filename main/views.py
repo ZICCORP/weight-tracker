@@ -46,9 +46,7 @@ class BweightView(LoginRequiredMixin,View):
            
             d.append(g)
 
-        d.append({'label':'40','y':150})
-        d.append({'label':'20','y':98})
-        d.append({'label':10,'y':50})
+       
        
         return d
 
